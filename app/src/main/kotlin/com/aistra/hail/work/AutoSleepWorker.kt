@@ -119,7 +119,24 @@ class AutoSleepWorker(context: Context, params: WorkerParameters) : Worker(conte
 
     companion object {
         private const val WORK_NAME = "auto_sleep"
+        const val ONE_SHOT_WORK_NAME = "auto_sleep_now"
         const val KEY_INTERVAL_HOURS = "interval_hours"
+
+        /** Run a one-time check immediately */
+        fun runOnce(context: Context) {
+            val request = OneTimeWorkRequestBuilder<AutoSleepWorker>()
+                .setConstraints(
+                    Constraints.Builder()
+                        .setRequiresBatteryNotLow(true)
+                        .build()
+                )
+                .build()
+            WorkManager.getInstance(context).enqueueUniqueWork(
+                ONE_SHOT_WORK_NAME,
+                ExistingWorkPolicy.REPLACE,
+                request
+            )
+        }
 
         /** Schedule or cancel the periodic Auto Sleep check */
         fun schedule(context: Context) {

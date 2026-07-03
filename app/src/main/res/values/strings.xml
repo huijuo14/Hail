@@ -168,4 +168,7 @@
     <string name="auto_sleep_interval_12h">12 hours</string>
     <string name="auto_sleep_interval_24h">24 hours</string>
     <string name="days">days</string>
+    <string name="auto_sleep_now">Sleep Now</string>
+    <string name="auto_sleep_now_summary">Check and freeze unused apps immediately</string>
+    <string name="auto_sleep_now_started">Auto Deep Sleep check started</string>
 </resources>

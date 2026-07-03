@@ -239,12 +239,27 @@ class SettingsFragment : MainFragment(), MenuProvider {
                 key = HailData.AUTO_SLEEP_ENABLED,
                 defaultValue = false,
                 onValueChange = { state, value ->
-                    state.value = value
-                    AutoSleepWorker.schedule(requireContext())
-                    true
+                    if (value && !HSystem.checkOpUsageStats(requireContext())) {
+                        startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                        false
+                    } else {
+                        state.value = value
+                        AutoSleepWorker.schedule(requireContext())
+                        true
+                    }
                 },
                 titleId = R.string.auto_deep_sleep_enabled,
                 icon = Icons.Outlined.Bedtime
+            )
+            preference(
+                key = "auto_sleep_now",
+                title = { Text(text = stringResource(R.string.auto_sleep_now)) },
+                summary = { Text(text = stringResource(R.string.auto_sleep_now_summary)) },
+                icon = { Icon(imageVector = Icons.Outlined.Bedtime, contentDescription = null) },
+                onClick = {
+                    AutoSleepWorker.runOnce(requireContext())
+                    HUI.showToast(R.string.auto_sleep_now_started)
+                }
             )
             sliderPreference(
                 key = HailData.AUTO_SLEEP_THRESHOLD_DAYS,
