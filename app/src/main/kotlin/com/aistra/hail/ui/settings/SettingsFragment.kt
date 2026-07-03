@@ -78,6 +78,7 @@ class SettingsFragment : MainFragment(), MenuProvider {
     @Composable
     private fun SettingsScreen() {
         val autoFreezeAfterLock = rememberPreferenceState(HailData.AUTO_FREEZE_AFTER_LOCK, false)
+        val autoSleepEnabled = rememberPreferenceState(HailData.AUTO_SLEEP_ENABLED, false)
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             listPreference(
                 key = HailData.WORKING_MODE,
@@ -245,7 +246,6 @@ class SettingsFragment : MainFragment(), MenuProvider {
                 titleId = R.string.auto_deep_sleep_enabled,
                 icon = Icons.Outlined.Bedtime
             )
-            val autoSleepEnabled = rememberPreferenceState(HailData.AUTO_SLEEP_ENABLED, false)
             sliderPreference(
                 key = HailData.AUTO_SLEEP_THRESHOLD_DAYS,
                 defaultValue = 7f,
