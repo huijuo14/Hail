@@ -89,4 +89,13 @@
         <item>@string/action_lock</item>
         <item>@string/action_lock_freeze</item>
     </string-array>
+    <string-array name="auto_sleep_scope_entries">
+        <item>@string/auto_sleep_scope_all</item>
+        <item>@string/auto_sleep_scope_checked</item>
+    </string-array>
+    <string-array name="auto_sleep_interval_entries">
+        <item>@string/auto_sleep_interval_6h</item>
+        <item>@string/auto_sleep_interval_12h</item>
+        <item>@string/auto_sleep_interval_24h</item>
+    </string-array>
 </resources>

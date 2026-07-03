@@ -14,6 +14,7 @@ import com.aistra.hail.app.HailData
 import com.aistra.hail.services.AutoFreezeService
 import com.aistra.hail.utils.HDhizuku
 import com.aistra.hail.utils.HTarget
+import com.aistra.hail.work.AutoSleepWorker
 
 class HailApp : Application() {
     override fun onCreate() {
@@ -22,6 +23,7 @@ class HailApp : Application() {
         // DirtyDataUpdater.update(app)
         if (!HTarget.S) setAppTheme(HailData.appTheme)
         if (HailData.workingMode.startsWith(HailData.DHIZUKU)) HDhizuku.init()
+        AutoSleepWorker.schedule(this)
     }
 
     fun setAutoFreezeService(autoFreezeAfterLock: Boolean = HailData.autoFreezeAfterLock, context: Context = app) {

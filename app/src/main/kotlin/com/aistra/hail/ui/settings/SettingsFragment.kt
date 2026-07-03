@@ -42,6 +42,7 @@ import com.aistra.hail.ui.main.MainActivity
 import com.aistra.hail.ui.main.MainFragment
 import com.aistra.hail.ui.theme.AppTheme
 import com.aistra.hail.utils.*
+import com.aistra.hail.work.AutoSleepWorker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textview.MaterialTextView
 import com.rosan.dhizuku.api.Dhizuku
@@ -230,6 +231,57 @@ class SettingsFragment : MainFragment(), MenuProvider {
                 titleId = R.string.skip_notifying_app,
                 enabled = autoFreezeAfterLock.value,
                 icon = Icons.Outlined.NotificationsActive
+            )
+            horizontalDivider()
+            preferenceCategory(key = "auto_deep_sleep", title = { Text(text = stringResource(R.string.auto_deep_sleep)) })
+            val autoSleepEnabled = rememberPreferenceState(HailData.AUTO_SLEEP_ENABLED, false)
+            switchPreference(
+                rememberState = { autoSleepEnabled },
+                onValueChange = { state, value ->
+                    state.value = value
+                    AutoSleepWorker.schedule(requireContext())
+                    true
+                },
+                titleId = R.string.auto_deep_sleep_enabled,
+                icon = Icons.Outlined.Bedtime
+            )
+            sliderPreference(
+                key = HailData.AUTO_SLEEP_THRESHOLD_DAYS,
+                defaultValue = 7f,
+                title = { Text(text = stringResource(R.string.auto_sleep_threshold_days)) },
+                valueRange = 1f..30f,
+                valueSteps = 29,
+                enabled = { autoSleepEnabled.value },
+                icon = { Icon(imageVector = Icons.Outlined.CalendarMonth, contentDescription = null) },
+                valueText = { Text(text = "%.0f ${requireContext().getString(R.string.days)}".format(it)) }
+            )
+            listPreference(
+                key = HailData.AUTO_SLEEP_SCOPE,
+                defaultValue = HailData.AUTO_SLEEP_SCOPE_ALL,
+                values = listOf(HailData.AUTO_SLEEP_SCOPE_ALL, HailData.AUTO_SLEEP_SCOPE_CHECKED),
+                entriesId = R.array.auto_sleep_scope_entries,
+                titleId = R.string.auto_sleep_scope,
+                icon = Icons.Outlined.FilterList
+            )
+            switchPreference(
+                key = HailData.AUTO_SLEEP_EXCLUDE_SYSTEM,
+                defaultValue = true,
+                titleId = R.string.auto_sleep_exclude_system,
+                enabled = autoSleepEnabled.value,
+                icon = Icons.Outlined.PhoneAndroid
+            )
+            listPreference(
+                key = HailData.AUTO_SLEEP_INTERVAL_HOURS,
+                defaultValue = "24",
+                values = listOf("6", "12", "24"),
+                entriesId = R.array.auto_sleep_interval_entries,
+                onValueChange = { state, value ->
+                    state.value = value
+                    AutoSleepWorker.schedule(requireContext())
+                    true
+                },
+                titleId = R.string.auto_sleep_interval,
+                icon = Icons.Outlined.Schedule
             )
             horizontalDivider()
             preferenceCategory(key = "shortcuts", title = { Text(text = stringResource(R.string.title_shortcuts)) })

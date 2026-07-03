@@ -154,4 +154,18 @@
     <string name="follow_system">Follow system</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
+
+    <!-- Auto Deep Sleep -->
+    <string name="auto_deep_sleep">Auto Deep Sleep</string>
+    <string name="auto_deep_sleep_enabled">Auto Deep Sleep</string>
+    <string name="auto_sleep_threshold_days">Days of no usage</string>
+    <string name="auto_sleep_scope">Scope</string>
+    <string name="auto_sleep_scope_all">All user apps</string>
+    <string name="auto_sleep_scope_checked">Checked apps only</string>
+    <string name="auto_sleep_exclude_system">Exclude system apps</string>
+    <string name="auto_sleep_interval">Check every</string>
+    <string name="auto_sleep_interval_6h">6 hours</string>
+    <string name="auto_sleep_interval_12h">12 hours</string>
+    <string name="auto_sleep_interval_24h">24 hours</string>
+    <string name="days">days</string>
 </resources>

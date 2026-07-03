@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.service.quicksettings.TileService
 import com.aistra.hail.app.HailApi
+import com.aistra.hail.data.AutoSleepData
 import com.aistra.hail.ui.api.ApiActivity
 import com.aistra.hail.utils.HTarget
 import com.aistra.hail.xposed.XposedInterface.BaseHook
@@ -80,6 +81,9 @@ class LaunchAppHook(classLoader: ClassLoader) : BaseHook(classLoader) {
         )
         if (method.invoke(packageManager, packageName) as Boolean) {
             context.startActivity(HailApi.getIntentForPackage(HailApi.ACTION_UNFREEZE, packageName))
+
+            // Remove from auto-sleep tracking since user is launching it
+            AutoSleepData.removeAutoSlept(packageName)
 
             /**
              * It took about 500 milliseconds from [Context.startActivity]

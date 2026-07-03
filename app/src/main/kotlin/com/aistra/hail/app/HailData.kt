@@ -120,6 +120,14 @@ object HailData {
     const val SKIP_WHILE_CHARGING = "skip_while_charging"
     const val SKIP_FOREGROUND_APP = "skip_foreground_app"
     const val SKIP_NOTIFYING_APP = "skip_notifying_app"
+    // Auto Deep Sleep — like Samsung's auto deep sleep for rarely used apps
+    const val AUTO_SLEEP_ENABLED = "auto_sleep_enabled"
+    const val AUTO_SLEEP_THRESHOLD_DAYS = "auto_sleep_threshold_days"
+    const val AUTO_SLEEP_SCOPE = "auto_sleep_scope" // "all" or "checked"
+    const val AUTO_SLEEP_EXCLUDE_SYSTEM = "auto_sleep_exclude_system"
+    const val AUTO_SLEEP_INTERVAL_HOURS = "auto_sleep_interval_hours"
+    const val AUTO_SLEEP_SCOPE_ALL = "all"
+    const val AUTO_SLEEP_SCOPE_CHECKED = "checked"
     const val DYNAMIC_SHORTCUT_ACTION = "dynamic_shortcut_action"
     val DYNAMIC_SHORTCUT_ACTIONS = listOf(
         ACTION_NONE,
@@ -155,6 +163,19 @@ object HailData {
     val skipForegroundApp get() = sp.getBoolean(SKIP_FOREGROUND_APP, false)
     val skipNotifyingApp get() = sp.getBoolean(SKIP_NOTIFYING_APP, false)
     val dynamicShortcutAction get() = sp.getString(DYNAMIC_SHORTCUT_ACTION, ACTION_NONE)!!
+
+    // Auto Deep Sleep preferences
+    var autoSleepEnabled
+        get() = sp.getBoolean(AUTO_SLEEP_ENABLED, false)
+        set(value) = sp.edit { putBoolean(AUTO_SLEEP_ENABLED, value) }
+    val autoSleepThresholdDays
+        get() = sp.getFloat(AUTO_SLEEP_THRESHOLD_DAYS, 7f).toInt().coerceIn(1, 30)
+    val autoSleepScope
+        get() = sp.getString(AUTO_SLEEP_SCOPE, AUTO_SLEEP_SCOPE_ALL)!!
+    val autoSleepExcludeSystem
+        get() = sp.getBoolean(AUTO_SLEEP_EXCLUDE_SYSTEM, true)
+    val autoSleepIntervalHours
+        get() = sp.getString(AUTO_SLEEP_INTERVAL_HOURS, "24")!!.toIntOrNull() ?: 24
 
     private val dir = "${app.filesDir.path}/v1"
     private val appsPath = "$dir/apps.json"
