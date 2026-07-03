@@ -96,9 +96,6 @@ class AutoSleepWorker(context: Context, params: WorkerParameters) : Worker(conte
             }
         }
 
-        // Schedule next run
-        scheduleNextRun(applicationContext)
-
         return Result.success()
     }
 

@@ -234,9 +234,9 @@ class SettingsFragment : MainFragment(), MenuProvider {
             )
             horizontalDivider()
             preferenceCategory(key = "auto_deep_sleep", title = { Text(text = stringResource(R.string.auto_deep_sleep)) })
-            val autoSleepEnabled = rememberPreferenceState(HailData.AUTO_SLEEP_ENABLED, false)
             switchPreference(
-                rememberState = { autoSleepEnabled },
+                key = HailData.AUTO_SLEEP_ENABLED,
+                defaultValue = false,
                 onValueChange = { state, value ->
                     state.value = value
                     AutoSleepWorker.schedule(requireContext())
@@ -245,6 +245,7 @@ class SettingsFragment : MainFragment(), MenuProvider {
                 titleId = R.string.auto_deep_sleep_enabled,
                 icon = Icons.Outlined.Bedtime
             )
+            val autoSleepEnabled = rememberPreferenceState(HailData.AUTO_SLEEP_ENABLED, false)
             sliderPreference(
                 key = HailData.AUTO_SLEEP_THRESHOLD_DAYS,
                 defaultValue = 7f,
