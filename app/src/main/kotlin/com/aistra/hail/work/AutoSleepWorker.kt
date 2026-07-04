@@ -2,8 +2,10 @@ package com.aistra.hail.work
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.usage.UsageStatsManager
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.core.app.NotificationCompat
 import androidx.work.*
@@ -11,8 +13,10 @@ import com.aistra.hail.HailApp.Companion.app
 import com.aistra.hail.app.AppManager
 import com.aistra.hail.app.HailData
 import com.aistra.hail.data.AutoSleepData
+import com.aistra.hail.receiver.SleepUndoReceiver
 import com.aistra.hail.utils.HPackages
 import com.aistra.hail.utils.HSystem
+import org.json.JSONArray
 import java.util.concurrent.TimeUnit
 
 /**
@@ -63,6 +67,13 @@ class AutoSleepWorker(context: Context, params: WorkerParameters) : Worker(conte
         val installedApps = HPackages.getInstalledApplications()
         val newlyFrozen = mutableListOf<String>()
 
+        // If exclude-new-installs is enabled, build set of package names installed within the configured window
+        val newInstallCutoff = if (HailData.autoSleepExcludeNewInstalls) {
+            now - (HailData.autoSleepNewInstallDays * 24L * 60 * 60 * 1000)
+        } else 0L
+
+        val pm = applicationContext.packageManager
+
         for (appInfo in installedApps) {
             val pkg = appInfo.packageName
 
@@ -79,6 +90,14 @@ class AutoSleepWorker(context: Context, params: WorkerParameters) : Worker(conte
             // Check if this app was recently unfrozen by user launch (grace period)
             if (AutoSleepData.isAutoSlept(pkg) && !graceExpired.contains(pkg)) continue
 
+            // Exclude recently installed apps
+            if (HailData.autoSleepExcludeNewInstalls) {
+                val firstInstallTime = try {
+                    pm.getPackageInfo(pkg, 0).firstInstallTime
+                } catch (_: Exception) { 0L }
+                if (firstInstallTime > 0 && firstInstallTime >= newInstallCutoff) continue
+            }
+
             if (scope == "checked" && HailData.checkedList.none { it.packageName == pkg }) continue
 
             val success = AppManager.setAppFrozen(pkg, true)
@@ -90,6 +109,9 @@ class AutoSleepWorker(context: Context, params: WorkerParameters) : Worker(conte
                 newlyFrozen.add(pkg)
             }
         }
+
+        // Store for Undo action
+        _lastFrozenBatch = newlyFrozen.toList()
 
         // Show notification if any apps were frozen
         if (newlyFrozen.isNotEmpty()) {
@@ -127,11 +149,31 @@ class AutoSleepWorker(context: Context, params: WorkerParameters) : Worker(conte
         val body = if (names.size <= 3) names.joinToString(", ") else
             "${names.take(3).joinToString(", ")} and ${names.size - 3} more"
 
+        // Build Undo PendingIntent: pass package list as JSON string
+        val packagesJson = JSONArray().apply {
+            frozenPackages.forEach { put(it) }
+        }.toString()
+        val undoIntent = Intent(SleepUndoReceiver.ACTION_SLEEP_UNDO).apply {
+            putExtra(SleepUndoReceiver.EXTRA_FROZEN_PACKAGES, packagesJson)
+            `package` = applicationContext.packageName
+        }
+        val undoPendingIntent = PendingIntent.getBroadcast(
+            applicationContext,
+            0,
+            undoIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
         NotificationCompat.Builder(applicationContext, channelId)
             .setSmallIcon(android.R.drawable.ic_menu_manage)
             .setContentTitle(title)
             .setContentText(body)
             .setStyle(NotificationCompat.BigTextStyle().bigText(body))
+            .addAction(
+                android.R.drawable.ic_menu_revert,
+                "Undo",
+                undoPendingIntent
+            )
             .setAutoCancel(true)
             .build().let { nm.notify(1001, it) }
     }
@@ -220,6 +262,9 @@ class AutoSleepWorker(context: Context, params: WorkerParameters) : Worker(conte
         private const val WORK_NAME = "auto_sleep"
         const val ONE_SHOT_WORK_NAME = "auto_sleep_now"
         const val KEY_INTERVAL_HOURS = "interval_hours"
+
+        /** Stores the last batch of frozen packages for Undo */
+        var _lastFrozenBatch: List<String>? = null
 
         /** Stores the last usage analysis result for display in settings */
         var _lastAnalysisResult: AnalysisResult? = null

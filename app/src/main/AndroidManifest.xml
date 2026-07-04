@@ -126,6 +126,13 @@
                 <action android:name="android.intent.action.PACKAGE_UNSUSPENDED_MANUALLY"/>
             </intent-filter>
         </receiver>
+        <receiver
+                android:name=".receiver.SleepUndoReceiver"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="com.aistra.hail.action.SLEEP_UNDO"/>
+            </intent-filter>
+        </receiver>
 
 
         <service

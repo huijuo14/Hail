@@ -329,6 +329,23 @@ class SettingsFragment : MainFragment(), MenuProvider {
                 enabled = autoSleepEnabled.value,
                 icon = Icons.Outlined.PhoneAndroid
             )
+            switchPreference(
+                key = HailData.AUTO_SLEEP_EXCLUDE_NEW_INSTALLS,
+                defaultValue = true,
+                titleId = R.string.auto_sleep_exclude_new_installs,
+                enabled = autoSleepEnabled.value,
+                icon = Icons.Outlined.NewReleases
+            )
+            sliderPreference(
+                key = HailData.AUTO_SLEEP_NEW_INSTALL_DAYS,
+                defaultValue = 7f,
+                title = { Text(text = stringResource(R.string.auto_sleep_new_install_days)) },
+                valueRange = 1f..30f,
+                valueSteps = 29,
+                enabled = { autoSleepEnabled.value },
+                icon = { Icon(imageVector = Icons.Outlined.Schedule, contentDescription = null) },
+                valueText = { Text(text = "%.0f ${requireContext().getString(R.string.days)}".format(it)) }
+            )
             listPreference(
                 key = HailData.AUTO_SLEEP_INTERVAL_HOURS,
                 defaultValue = "24",

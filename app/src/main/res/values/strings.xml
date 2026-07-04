@@ -163,6 +163,8 @@
     <string name="auto_sleep_scope_all">All user apps</string>
     <string name="auto_sleep_scope_checked">Checked apps only</string>
     <string name="auto_sleep_exclude_system">Exclude system apps</string>
+    <string name="auto_sleep_exclude_new_installs">Exclude newly installed apps</string>
+    <string name="auto_sleep_new_install_days">New app protection period</string>
     <string name="auto_sleep_interval">Check every</string>
     <string name="auto_sleep_interval_6h">6 hours</string>
     <string name="auto_sleep_interval_12h">12 hours</string>
