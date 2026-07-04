@@ -2,10 +2,47 @@
 
 # 雹 Hail
 
-[![Android CI status](https://github.com/aistra0528/Hail/workflows/Android%20CI/badge.svg)](https://github.com/aistra0528/Hail/actions)
+[![Android CI status](https://github.com/huijuo14/Hail/workflows/Android%20CI/badge.svg)](https://github.com/huijuo14/Hail/actions)
 [![翻译状态](https://hosted.weblate.org/widgets/hail/-/svg-badge.svg)](https://hosted.weblate.org/engage/hail/)
 [![Downloads](https://img.shields.io/github/downloads/aistra0528/Hail/total.svg)](https://github.com/aistra0528/Hail/releases)
 [![License](https://img.shields.io/github/license/aistra0528/Hail)](LICENSE)
+
+
+> **Fork note:** This is a feature fork ([huijuo14/Hail](https://github.com/huijuo14/Hail)) with **Auto Deep Sleep** added.
+> Original: [aistra0528/Hail](https://github.com/aistra0528/Hail)
+
+## ✨ Auto Deep Sleep (New Feature Like Samsung's)
+
+Automatically freezes apps that haven't been used in a configurable number of days. Inspired by Samsung's "Auto Deep Sleep" feature.
+
+### How It Works
+
+1. **Periodic Check** — A background worker runs every 6/12/24 hours (configurable)
+2. **Usage Analysis** — Queries `UsageStatsManager` to find apps not used in N days
+3. **Auto-Freeze** — Freezes qualifying apps via your chosen working mode (Shizuku, Root, etc.)
+4. **Smart Grace Period** — Apps you launch are unfrozen and won't be re-frozen for 24 hours
+5. **Notification** — Shows which apps were auto-frozen after each check
+6. **Last Used** — "Today/Yesterday/Xd ago" timestamps visible in the app list
+7. **Analytics Dashboard** — Stats card in Settings showing usage patterns & suggested threshold
+
+### Configuration (Settings → Auto Deep Sleep)
+
+| Setting | Options | Default |
+|---|---|---|
+| **Auto Deep Sleep** | On/Off (prompts for Usage Access) | Off |
+| **Days of No Usage** | Slider 1–30 days | 7 days |
+| **Scope** | All user apps / Checked apps only | All user apps |
+| **Exclude System Apps** | On/Off | On |
+| **Check Interval** | 6h / 12h / 24h | 24h |
+| **Sleep Now** | Button for immediate check | — |
+
+### Integration
+
+- **Whitelisted** apps are never auto-frozen
+- **System apps** can be excluded (default on)
+- Works with **all** Hail working modes (Shizuku, Root, Dhizuku, Device Owner, Island/Insular)
+- Xposed hook unfreezes auto-slept apps on launch automatically
+- Manual unfreeze clears auto-sleep tracking
 
 雹是一款用于冻结 Android 应用的自由软件。[GitHub Releases](https://github.com/aistra0528/Hail/releases)
 
