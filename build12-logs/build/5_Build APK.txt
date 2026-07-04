@@ -1,0 +1,84 @@
+﻿2026-07-04T08:40:15.0061735Z ##[group]Run ./gradlew assembleRelease
+2026-07-04T08:40:15.0062187Z [36;1m./gradlew assembleRelease[0m
+2026-07-04T08:40:15.0094219Z shell: /usr/bin/bash -e {0}
+2026-07-04T08:40:15.0094532Z env:
+2026-07-04T08:40:15.0094892Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.11-10/x64
+2026-07-04T08:40:15.0095461Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.11-10/x64
+2026-07-04T08:40:15.0095892Z ##[endgroup]
+2026-07-04T08:40:15.2295197Z Downloading https://services.gradle.org/distributions/gradle-8.13-all.zip
+2026-07-04T08:40:17.4175800Z ......................10%......................20%......................30%......................40%......................50%......................60%......................70%.......................80%......................90%......................100%
+2026-07-04T08:40:20.6995910Z 
+2026-07-04T08:40:20.6997299Z Welcome to Gradle 8.13!
+2026-07-04T08:40:20.6997821Z 
+2026-07-04T08:40:20.6999651Z Here are the highlights of this release:
+2026-07-04T08:40:20.7029438Z  - Daemon JVM auto-provisioning
+2026-07-04T08:40:20.7030164Z  - Enhancements for Scala plugin and JUnit testing
+2026-07-04T08:40:20.7030814Z  - Improvements for build authors and plugin developers
+2026-07-04T08:40:20.7031245Z 
+2026-07-04T08:40:20.7031583Z For more details see https://docs.gradle.org/8.13/release-notes.html
+2026-07-04T08:40:20.7032095Z 
+2026-07-04T08:40:20.7990753Z Starting a Gradle Daemon (subsequent builds will be faster)
+2026-07-04T08:41:19.3029778Z > Task :app:preBuild UP-TO-DATE
+2026-07-04T08:41:19.3039707Z > Task :app:preReleaseBuild UP-TO-DATE
+2026-07-04T08:41:19.3996462Z > Task :app:mergeReleaseJniLibFolders
+2026-07-04T08:41:32.0991915Z > Task :app:mergeReleaseNativeLibs
+2026-07-04T08:41:32.1040731Z > Task :app:buildKotlinToolingMetadata
+2026-07-04T08:41:33.1988183Z 
+2026-07-04T08:41:33.2019781Z > Task :app:stripReleaseDebugSymbols
+2026-07-04T08:41:33.2025402Z Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so. Run with --info option to learn more.
+2026-07-04T08:41:33.9987369Z 
+2026-07-04T08:41:33.9988319Z > Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-07-04T08:41:33.9989316Z > Task :app:extractReleaseNativeSymbolTables
+2026-07-04T08:41:33.9989770Z > Task :app:checkReleaseDuplicateClasses
+2026-07-04T08:41:34.6987814Z > Task :app:dataBindingMergeDependencyArtifactsRelease
+2026-07-04T08:41:34.6988856Z > Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
+2026-07-04T08:41:34.6989490Z > Task :app:generateReleaseResValues
+2026-07-04T08:41:34.6989952Z > Task :app:extractReleaseSupportedLocales
+2026-07-04T08:41:35.0994119Z > Task :app:generateReleaseResources
+2026-07-04T08:41:35.1009456Z > Task :app:generateReleaseLocaleConfig
+2026-07-04T08:41:35.1039469Z > Task :app:generateReleaseBuildConfig
+2026-07-04T08:41:38.0010104Z > Task :app:packageReleaseResources
+2026-07-04T08:41:39.3989797Z > Task :app:checkReleaseAarMetadata
+2026-07-04T08:41:39.4058876Z > Task :app:mapReleaseSourceSetPaths
+2026-07-04T08:41:39.4089401Z > Task :app:parseReleaseLocalResources
+2026-07-04T08:41:39.4179577Z > Task :app:createReleaseCompatibleScreenManifests
+2026-07-04T08:41:39.4239547Z > Task :app:extractDeepLinksRelease
+2026-07-04T08:41:40.0009751Z > Task :app:mergeReleaseResources
+2026-07-04T08:41:40.2999901Z > Task :app:processReleaseMainManifest
+2026-07-04T08:41:40.6987675Z > Task :app:dataBindingGenBaseClassesRelease
+2026-07-04T08:41:40.7991952Z > Task :app:processReleaseManifest
+2026-07-04T08:41:40.9010318Z > Task :app:processReleaseManifestForPackage
+2026-07-04T08:41:40.9029237Z > Task :app:javaPreCompileRelease
+2026-07-04T08:41:41.1029089Z > Task :app:mergeReleaseArtProfile
+2026-07-04T08:41:41.1029960Z > Task :app:extractProguardFiles
+2026-07-04T08:41:41.1059186Z > Task :app:mergeReleaseStartupProfile
+2026-07-04T08:41:41.1089140Z > Task :app:mergeReleaseShaders
+2026-07-04T08:41:41.1099304Z > Task :app:compileReleaseShaders NO-SOURCE
+2026-07-04T08:41:41.1100329Z > Task :app:generateReleaseAssets UP-TO-DATE
+2026-07-04T08:41:41.2989697Z > Task :app:mergeReleaseAssets
+2026-07-04T08:41:41.2990264Z > Task :app:compressReleaseAssets
+2026-07-04T08:41:41.3987513Z > Task :app:extractReleaseVersionControlInfo
+2026-07-04T08:41:42.1987955Z > Task :app:processReleaseResources
+2026-07-04T08:41:42.2992767Z > Task :app:validateSigningRelease
+2026-07-04T08:41:50.4003233Z > Task :app:writeReleaseAppMetadata
+2026-07-04T08:41:50.4004163Z > Task :app:writeReleaseSigningConfigVersions
+2026-07-04T08:42:03.8992028Z 
+2026-07-04T08:42:03.8993720Z e: file:///home/runner/work/Hail/Hail/app/src/main/kotlin/com/aistra/hail/work/AutoSleepWorker.kt:99:45 Unresolved reference 'isInitialized'.
+2026-07-04T08:42:03.8999724Z > Task :app:compileReleaseKotlin FAILED
+2026-07-04T08:42:04.0016874Z 
+2026-07-04T08:42:04.0039386Z FAILURE: Build failed with an exception.
+2026-07-04T08:42:04.0061298Z 
+2026-07-04T08:42:04.0061562Z 36 actionable tasks: 36 executed
+2026-07-04T08:42:04.0062322Z * What went wrong:
+2026-07-04T08:42:04.0063253Z Execution failed for task ':app:compileReleaseKotlin'.
+2026-07-04T08:42:04.0064769Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+2026-07-04T08:42:04.0066208Z    > Compilation error. See log for more details
+2026-07-04T08:42:04.0066742Z 
+2026-07-04T08:42:04.0067029Z * Try:
+2026-07-04T08:42:04.0067593Z > Run with --stacktrace option to get the stack trace.
+2026-07-04T08:42:04.0068770Z > Run with --info or --debug option to get more log output.
+2026-07-04T08:42:04.0069595Z > Run with --scan to get full insights.
+2026-07-04T08:42:04.0070308Z > Get more help at https://help.gradle.org.
+2026-07-04T08:42:04.0071291Z 
+2026-07-04T08:42:04.0071627Z BUILD FAILED in 1m 48s
+2026-07-04T08:42:04.4194071Z ##[error]Process completed with exit code 1.

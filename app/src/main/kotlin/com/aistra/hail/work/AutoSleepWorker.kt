@@ -96,10 +96,8 @@ class AutoSleepWorker(context: Context, params: WorkerParameters) : Worker(conte
             // Skip if app has active notifications (user may be engaged)
             if (HailData.skipNotifyingApp) {
                 try {
-                    if (::AutoFreezeService.isInitialized &&
-                        AutoFreezeService.instance.activeNotifications.any { it.packageName == pkg }
-                    ) continue
-                } catch (_: Exception) { /* ignore */ }
+                    if (AutoFreezeService.instance.activeNotifications.any { it.packageName == pkg }) continue
+                } catch (_: Exception) { /* service not running or no active notifications */ }
             }
 
             // Exclude recently installed apps

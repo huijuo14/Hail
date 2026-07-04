@@ -1,0 +1,73 @@
+﻿2026-07-04T08:40:13.8587728Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-07-04T08:40:13.8596843Z ##[group]Run actions/checkout@v4
+2026-07-04T08:40:13.8597581Z with:
+2026-07-04T08:40:13.8597993Z   repository: huijuo14/Hail
+2026-07-04T08:40:13.8602067Z   token: ***
+2026-07-04T08:40:13.8602490Z   ssh-strict: true
+2026-07-04T08:40:13.8602906Z   ssh-user: git
+2026-07-04T08:40:13.8603385Z   persist-credentials: true
+2026-07-04T08:40:13.8603849Z   clean: true
+2026-07-04T08:40:13.8604272Z   sparse-checkout-cone-mode: true
+2026-07-04T08:40:13.8604772Z   fetch-depth: 1
+2026-07-04T08:40:13.8605186Z   fetch-tags: false
+2026-07-04T08:40:13.8605613Z   show-progress: true
+2026-07-04T08:40:13.8606041Z   lfs: false
+2026-07-04T08:40:13.8606465Z   submodules: false
+2026-07-04T08:40:13.8606931Z   set-safe-directory: true
+2026-07-04T08:40:13.8607672Z ##[endgroup]
+2026-07-04T08:40:13.9656408Z Syncing repository: huijuo14/Hail
+2026-07-04T08:40:13.9659242Z ##[group]Getting Git version info
+2026-07-04T08:40:13.9660261Z Working directory is '/home/runner/work/Hail/Hail'
+2026-07-04T08:40:13.9661794Z [command]/usr/bin/git version
+2026-07-04T08:40:13.9703196Z git version 2.54.0
+2026-07-04T08:40:13.9727801Z ##[endgroup]
+2026-07-04T08:40:13.9745815Z Temporarily overriding HOME='/home/runner/work/_temp/4537e2c0-a117-418b-8eb4-d999b593ea80' before making global git config changes
+2026-07-04T08:40:13.9749013Z Adding repository directory to the temporary git global config as a safe directory
+2026-07-04T08:40:13.9752923Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hail/Hail
+2026-07-04T08:40:13.9811238Z Deleting the contents of '/home/runner/work/Hail/Hail'
+2026-07-04T08:40:13.9816692Z ##[group]Initializing the repository
+2026-07-04T08:40:13.9822694Z [command]/usr/bin/git init /home/runner/work/Hail/Hail
+2026-07-04T08:40:13.9958807Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-07-04T08:40:13.9960830Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-07-04T08:40:13.9962685Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-07-04T08:40:13.9964203Z hint: call:
+2026-07-04T08:40:13.9965070Z hint:
+2026-07-04T08:40:13.9966155Z hint: 	git config --global init.defaultBranch <name>
+2026-07-04T08:40:13.9967392Z hint:
+2026-07-04T08:40:13.9968771Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-07-04T08:40:13.9970741Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-07-04T08:40:13.9972212Z hint:
+2026-07-04T08:40:13.9972965Z hint: 	git branch -m <name>
+2026-07-04T08:40:13.9973793Z hint:
+2026-07-04T08:40:13.9974882Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-07-04T08:40:13.9976574Z Initialized empty Git repository in /home/runner/work/Hail/Hail/.git/
+2026-07-04T08:40:13.9982974Z [command]/usr/bin/git remote add origin https://github.com/huijuo14/Hail
+2026-07-04T08:40:14.0033010Z ##[endgroup]
+2026-07-04T08:40:14.0034182Z ##[group]Disabling automatic garbage collection
+2026-07-04T08:40:14.0037552Z [command]/usr/bin/git config --local gc.auto 0
+2026-07-04T08:40:14.0086306Z ##[endgroup]
+2026-07-04T08:40:14.0087866Z ##[group]Setting up auth
+2026-07-04T08:40:14.0089702Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-07-04T08:40:14.0129637Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-07-04T08:40:14.0630522Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-07-04T08:40:14.0671267Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-07-04T08:40:14.0931377Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-07-04T08:40:14.0963699Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-07-04T08:40:14.1214049Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-07-04T08:40:14.1255114Z ##[endgroup]
+2026-07-04T08:40:14.1256534Z ##[group]Fetching the repository
+2026-07-04T08:40:14.1267009Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +661c032732d0294baba7d5ac86cce99cd2e10697:refs/remotes/origin/master
+2026-07-04T08:40:14.6391477Z From https://github.com/huijuo14/Hail
+2026-07-04T08:40:14.6392999Z  * [new ref]         661c032732d0294baba7d5ac86cce99cd2e10697 -> origin/master
+2026-07-04T08:40:14.6433815Z ##[endgroup]
+2026-07-04T08:40:14.6435786Z ##[group]Determining the checkout info
+2026-07-04T08:40:14.6437560Z ##[endgroup]
+2026-07-04T08:40:14.6444843Z [command]/usr/bin/git sparse-checkout disable
+2026-07-04T08:40:14.6499001Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-07-04T08:40:14.6534590Z ##[group]Checking out the ref
+2026-07-04T08:40:14.6538911Z [command]/usr/bin/git checkout --progress --force -B master refs/remotes/origin/master
+2026-07-04T08:40:14.7165164Z Reset branch 'master'
+2026-07-04T08:40:14.7167589Z branch 'master' set up to track 'origin/master'.
+2026-07-04T08:40:14.7184071Z ##[endgroup]
+2026-07-04T08:40:14.7240258Z [command]/usr/bin/git log -1 --format=%H
+2026-07-04T08:40:14.7267709Z 661c032732d0294baba7d5ac86cce99cd2e10697
