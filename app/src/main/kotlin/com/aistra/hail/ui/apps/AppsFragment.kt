@@ -252,6 +252,30 @@ class AppsFragment : MainFragment(), AppsAdapter.OnItemClickListener, AppsAdapte
 
             R.id.filter_frozen_apps -> changeAppsFilter(HailData.FILTER_FROZEN_APPS, item)
             R.id.filter_unfrozen_apps -> changeAppsFilter(HailData.FILTER_UNFROZEN_APPS, item)
+            R.id.action_select_all -> {
+                val displayList = model.displayApps.value
+                if (displayList != null) {
+                    for (appInfo in displayList) {
+                        if (!HailData.isChecked(appInfo.packageName)) {
+                            HailData.addCheckedApp(appInfo.packageName)
+                        }
+                    }
+                    appsAdapter.notifyDataSetChanged()
+                }
+                return true
+            }
+            R.id.action_deselect_all -> {
+                val displayList = model.displayApps.value
+                if (displayList != null) {
+                    for (appInfo in displayList) {
+                        if (HailData.isChecked(appInfo.packageName)) {
+                            HailData.removeCheckedApp(appInfo.packageName)
+                        }
+                    }
+                    appsAdapter.notifyDataSetChanged()
+                }
+                return true
+            }
         }
         return false
     }
