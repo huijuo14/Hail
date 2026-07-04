@@ -37,6 +37,7 @@ import com.aistra.hail.R
 import com.aistra.hail.app.AppManager
 import com.aistra.hail.app.HailApi
 import com.aistra.hail.app.HailData
+import com.aistra.hail.data.AutoSleepData
 import com.aistra.hail.databinding.DialogInputBinding
 import com.aistra.hail.ui.main.MainActivity
 import com.aistra.hail.ui.main.MainFragment
@@ -261,6 +262,45 @@ class SettingsFragment : MainFragment(), MenuProvider {
                     HUI.showToast(R.string.auto_sleep_now_started)
                 }
             )
+            // Analytics dashboard
+            item(key = "auto_sleep_stats", contentType = "StatsCard") {
+                val analysis = AutoSleepWorker.getAnalysisResult()
+                val autoSleptCount = AutoSleepData.autoSleptApps.size
+                if (analysis != null || autoSleptCount > 0) {
+                    androidx.compose.material3.Card(
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        colors = androidx.compose.material3.CardDefaults.cardColors(
+                            containerColor = androidx.compose.material3.MaterialTheme.colorScheme.surfaceVariant
+                        )
+                    ) {
+                        androidx.compose.foundation.layout.Column(
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            Text(
+                                text = "📊 Auto Deep Sleep Stats",
+                                style = androidx.compose.material3.MaterialTheme.typography.titleSmall
+                            )
+                            if (analysis != null) {
+                                Text(
+                                    text = "• ${analysis.rarelyUsedCount} of ${analysis.totalUserApps} user apps rarely used",
+                                    style = androidx.compose.material3.MaterialTheme.typography.bodySmall
+                                )
+                                Text(
+                                    text = "• Suggested threshold: ${analysis.suggestedThreshold} days",
+                                    style = androidx.compose.material3.MaterialTheme.typography.bodySmall,
+                                    color = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                                )
+                            }
+                            if (autoSleptCount > 0) {
+                                Text(
+                                    text = "• Currently tracking $autoSleptCount auto-slept app${if (autoSleptCount > 1) "s" else ""}",
+                                    style = androidx.compose.material3.MaterialTheme.typography.bodySmall
+                                )
+                            }
+                        }
+                    }
+                }
+            }
             sliderPreference(
                 key = HailData.AUTO_SLEEP_THRESHOLD_DAYS,
                 defaultValue = 7f,

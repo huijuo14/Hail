@@ -128,6 +128,8 @@ object HailData {
     const val AUTO_SLEEP_INTERVAL_HOURS = "auto_sleep_interval_hours"
     const val AUTO_SLEEP_SCOPE_ALL = "all"
     const val AUTO_SLEEP_SCOPE_CHECKED = "checked"
+    const val AUTO_SLEEP_GRACE_HOURS = "auto_sleep_grace_hours" // Don't re-freeze for N hours after launch
+    const val AUTO_SLEEP_LAST_ANALYSIS = "auto_sleep_last_analysis" // Timestamp of last usage analysis
     const val DYNAMIC_SHORTCUT_ACTION = "dynamic_shortcut_action"
     val DYNAMIC_SHORTCUT_ACTIONS = listOf(
         ACTION_NONE,
@@ -176,6 +178,11 @@ object HailData {
         get() = sp.getBoolean(AUTO_SLEEP_EXCLUDE_SYSTEM, true)
     val autoSleepIntervalHours
         get() = sp.getString(AUTO_SLEEP_INTERVAL_HOURS, "24")!!.toIntOrNull() ?: 24
+    val autoSleepGraceHours
+        get() = sp.getInt(AUTO_SLEEP_GRACE_HOURS, 24) // default 24h grace period
+    var autoSleepLastAnalysis
+        get() = sp.getLong(AUTO_SLEEP_LAST_ANALYSIS, 0L)
+        set(value) = sp.edit { putLong(AUTO_SLEEP_LAST_ANALYSIS, value) }
 
     private val dir = "${app.filesDir.path}/v1"
     private val appsPath = "$dir/apps.json"
