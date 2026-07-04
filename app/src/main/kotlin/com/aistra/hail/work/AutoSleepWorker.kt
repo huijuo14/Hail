@@ -128,12 +128,12 @@ class AutoSleepWorker(context: Context, params: WorkerParameters) : Worker(conte
             "${names.take(3).joinToString(", ")} and ${names.size - 3} more"
 
         NotificationCompat.Builder(applicationContext, channelId)
-            .setSmallIcon(android.R.drawable.ic_menu_sleep)
+            .setSmallIcon(android.R.drawable.ic_menu_manage)
             .setContentTitle(title)
             .setContentText(body)
             .setStyle(NotificationCompat.BigTextStyle().bigText(body))
             .setAutoCancel(true)
-            .build().also { nm.notify(1001, it) }
+            .build().let { nm.notify(1001, it) }
     }
 
     private fun analyzeUsagePatterns(usageStatsManager: UsageStatsManager, now: Long) {
