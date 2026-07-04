@@ -8,12 +8,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.work.*
 import com.aistra.hail.HailApp.Companion.app
 import com.aistra.hail.app.AppManager
 import com.aistra.hail.app.HailData
 import com.aistra.hail.data.AutoSleepData
+import com.aistra.hail.data.FreezeHistoryData
 import com.aistra.hail.receiver.SleepUndoReceiver
+import com.aistra.hail.services.AutoFreezeService
 import com.aistra.hail.utils.HPackages
 import com.aistra.hail.utils.HSystem
 import org.json.JSONArray
@@ -90,6 +93,15 @@ class AutoSleepWorker(context: Context, params: WorkerParameters) : Worker(conte
             // Check if this app was recently unfrozen by user launch (grace period)
             if (AutoSleepData.isAutoSlept(pkg) && !graceExpired.contains(pkg)) continue
 
+            // Skip if app has active notifications (user may be engaged)
+            if (HailData.skipNotifyingApp) {
+                try {
+                    if (::AutoFreezeService.isInitialized &&
+                        AutoFreezeService.instance.activeNotifications.any { it.packageName == pkg }
+                    ) continue
+                } catch (_: Exception) { /* ignore */ }
+            }
+
             // Exclude recently installed apps
             if (HailData.autoSleepExcludeNewInstalls) {
                 val firstInstallTime = try {
@@ -113,8 +125,9 @@ class AutoSleepWorker(context: Context, params: WorkerParameters) : Worker(conte
         // Store for Undo action
         _lastFrozenBatch = newlyFrozen.toList()
 
-        // Show notification if any apps were frozen
+        // Record history and show notification
         if (newlyFrozen.isNotEmpty()) {
+            FreezeHistoryData.recordFreeze(newlyFrozen)
             showAutoSleepNotification(newlyFrozen)
         }
 
@@ -139,8 +152,13 @@ class AutoSleepWorker(context: Context, params: WorkerParameters) : Worker(conte
 
         val channelId = "auto_deep_sleep"
         val nm = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val importance = when (HailData.autoSleepNotificationImportance) {
+            "high" -> NotificationManager.IMPORTANCE_HIGH
+            "normal" -> NotificationManager.IMPORTANCE_DEFAULT
+            else -> NotificationManager.IMPORTANCE_LOW
+        }
         nm.createNotificationChannel(
-            NotificationChannel(channelId, "Auto Deep Sleep", NotificationManager.IMPORTANCE_LOW).apply {
+            NotificationChannel(channelId, "Auto Deep Sleep", importance).apply {
                 description = "Shows which apps were auto-frozen"
             }
         )

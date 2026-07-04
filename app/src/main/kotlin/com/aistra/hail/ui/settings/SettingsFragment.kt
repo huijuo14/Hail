@@ -41,6 +41,7 @@ import com.aistra.hail.app.AppManager
 import com.aistra.hail.app.HailApi
 import com.aistra.hail.app.HailData
 import com.aistra.hail.data.AutoSleepData
+import com.aistra.hail.data.FreezeHistoryData
 import com.aistra.hail.databinding.DialogInputBinding
 import com.aistra.hail.ui.main.MainActivity
 import com.aistra.hail.ui.main.MainFragment
@@ -269,7 +270,9 @@ class SettingsFragment : MainFragment(), MenuProvider {
             item(key = "auto_sleep_stats", contentType = "StatsCard") {
                 val analysis = AutoSleepWorker.getAnalysisResult()
                 val autoSleptCount = AutoSleepData.autoSleptApps.size
-                if (analysis != null || autoSleptCount > 0) {
+                val recentHistory = FreezeHistoryData.getRecentHistory(14)
+                val totalFreezeCount = FreezeHistoryData.getTotalFreezeCount()
+                if (analysis != null || autoSleptCount > 0 || recentHistory.isNotEmpty()) {
                     androidx.compose.material3.Card(
                         modifier = Modifier.fillMaxWidth().padding(16.dp),
                         colors = androidx.compose.material3.CardDefaults.cardColors(
@@ -299,6 +302,34 @@ class SettingsFragment : MainFragment(), MenuProvider {
                                     text = "• Currently tracking $autoSleptCount auto-slept app${if (autoSleptCount > 1) "s" else ""}",
                                     style = androidx.compose.material3.MaterialTheme.typography.bodySmall
                                 )
+                            }
+                            if (totalFreezeCount > 0) {
+                                Text(
+                                    text = "• Total frozen: $totalFreezeCount app${if (totalFreezeCount > 1) "s" else ""} since tracking started",
+                                    style = androidx.compose.material3.MaterialTheme.typography.bodySmall
+                                )
+                                // Show last few days of history
+                                val lastWeek = recentHistory.take(7)
+                                if (lastWeek.isNotEmpty()) {
+                                    Text(
+                                        text = "📋 Recent freeze history:",
+                                        style = androidx.compose.material3.MaterialTheme.typography.bodySmall,
+                                        modifier = Modifier.padding(top = 4.dp)
+                                    )
+                                    lastWeek.forEach { event ->
+                                        val pm = requireContext().packageManager
+                                        val names = event.packages.take(3).mapNotNull { pkg ->
+                                            try { pm.getApplicationInfo(pkg, 0).loadLabel(pm).toString() } catch (_: Exception) { null }
+                                        }
+                                        val detail = if (names.size <= 3) names.joinToString(", ") else
+                                            "${names.take(3).joinToString(", ")} and ${event.packages.size - 3} more"
+                                        Text(
+                                            text = "  ${event.date}: ${event.count} app${if (event.count > 1) "s" else ""} ($detail)",
+                                            style = androidx.compose.material3.MaterialTheme.typography.bodySmall,
+                                            color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
@@ -358,6 +389,27 @@ class SettingsFragment : MainFragment(), MenuProvider {
                 },
                 titleId = R.string.auto_sleep_interval,
                 icon = Icons.Outlined.Schedule
+            )
+            listPreference(
+                key = HailData.AUTO_SLEEP_NOTIFICATION_IMPORTANCE,
+                defaultValue = "low",
+                values = listOf("low", "normal", "high"),
+                titleId = R.string.auto_sleep_notification_importance,
+                icon = Icons.Outlined.Notifications,
+                summary = {
+                    when (it) {
+                        "normal" -> "Normal"
+                        "high" -> "High (sound + popup)"
+                        else -> "Silent (no sound)"
+                    }
+                },
+                valueToText = {
+                    when (it) {
+                        "normal" -> "Normal"
+                        "high" -> "High (sound + popup)"
+                        else -> "Silent (no sound)"
+                    }
+                }
             )
             horizontalDivider()
             preferenceCategory(key = "shortcuts", title = { Text(text = stringResource(R.string.title_shortcuts)) })

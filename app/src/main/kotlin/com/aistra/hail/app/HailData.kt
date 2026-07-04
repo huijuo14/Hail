@@ -132,6 +132,7 @@ object HailData {
     const val AUTO_SLEEP_EXCLUDE_NEW_INSTALLS = "auto_sleep_exclude_new_installs" // Skip recently installed apps
     const val AUTO_SLEEP_NEW_INSTALL_DAYS = "auto_sleep_new_install_days" // How many days is "new"
     const val AUTO_SLEEP_LAST_ANALYSIS = "auto_sleep_last_analysis" // Timestamp of last usage analysis
+    const val AUTO_SLEEP_NOTIFICATION_IMPORTANCE = "auto_sleep_notification_importance" // "low" / "default" / "high"
     const val DYNAMIC_SHORTCUT_ACTION = "dynamic_shortcut_action"
     val DYNAMIC_SHORTCUT_ACTIONS = listOf(
         ACTION_NONE,
@@ -189,6 +190,8 @@ object HailData {
         get() = sp.getBoolean(AUTO_SLEEP_EXCLUDE_NEW_INSTALLS, true)
     val autoSleepNewInstallDays
         get() = sp.getFloat(AUTO_SLEEP_NEW_INSTALL_DAYS, 7f).toInt().coerceIn(1, 30)
+    val autoSleepNotificationImportance
+        get() = sp.getString(AUTO_SLEEP_NOTIFICATION_IMPORTANCE, "low")!! // "low", "normal", "high"
 
     private val dir = "${app.filesDir.path}/v1"
     private val appsPath = "$dir/apps.json"
